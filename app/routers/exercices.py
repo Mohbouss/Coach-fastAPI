@@ -16,7 +16,7 @@ def get_all_exercices(db : Session =Depends(get_db)):
  return exercices  
 ##read task with specific id 
 @router.get('/exercices/{id}')
-def get_task_state(id :int,db : Session =Depends(get_db)):
+def get_exercises_by_user_id(id :int,db : Session =Depends(get_db)):
  exercice =db.query(models.Exercice).filter(models.Exercice.userid == id).all()
  return exercice  
 ##create exercices   
@@ -31,7 +31,7 @@ def create_exercice(exercice: schemas.Exercice,db : Session =Depends(get_db) ):
 ##delete exercices
 
 @router.delete('/exercice/{id}', status_code=status.HTTP_204_NO_CONTENT)
-def delete_task(id: int,db : Session =Depends(get_db)):
+def delete_exercise_by_id(id: int,db : Session =Depends(get_db)):
     deleted_task=db.query(models.Exercice).filter(models.Exercice.id == id)
     if deleted_task.first() == None:
        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"exercices with id: {id} not found")

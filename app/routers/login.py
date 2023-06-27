@@ -9,11 +9,12 @@ router =APIRouter(
 @router.post("/login")
 def login(user_credentials :schemas.Auth , db: Session = Depends(get_db)):
     password=user_credentials.password
+
     user=db.query(models.User).filter(models.User.email==user_credentials.email).first()
     if  user ==None:
-        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND,detail="invalid credentials")
+        raise HTTPException(status_code = status.HTTP_401_UNAUTHORIZED,detail="invalid credentials")
     
     if not utils.verify(user_credentials.password,user.password):    
-         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND,detail="invalid credentials")
+         raise HTTPException(status_code = status.HTTP_401_UNAUTHORIZED,detail="invalid credentials")
     
     return user

@@ -11,12 +11,13 @@ router =APIRouter(
 
 @router.get('/users')
 def  get_all_users(db: Session = Depends(get_db)):
-   users=db.query(models.User).all()
-   return users
+    users= db.query(models.User).filter(models.User.role != "coach" ).all()
+    return users
 @router.get("/user/{id}")
-def get_user_information(id : int,db: Session = Depends(get_db) ):
+def get_user_by_id(id : int,db: Session = Depends(get_db) ):
     user = db.query(models.User).filter(models.User.id == id).first()
-    
+    if not user :
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"user with id {id} not")
     return user 
 
 @router.post('/users', status_code=status.HTTP_201_CREATED,response_model=schemas.UserCreationResponse)
@@ -33,9 +34,11 @@ def create_user(user : schemas.User,db: Session = Depends(get_db)):
 def delete_user(id :int ,db: Session= Depends(get_db)):
     deleted_user = db.query(models.User).filter(models.User.id == id)
     if deleted_user.first() == None:
-         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"user with id : {id} not found")
-    
-    deleted_user.delete(synchronize_session=False)
+         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"user with id : {id} doesn't exist")
+    try:
+        deleted_user.delete(synchronize_session=False)
+    except:
+       raise HTTPException(status_code =status.HTTP_401_UNAUTHORIZED,detail ="cannot delete a user having exercices")
     db.commit()
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)

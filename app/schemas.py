@@ -1,4 +1,5 @@
 from pydantic import BaseModel,EmailStr
+from typing import Optional
 
 class Exercice(BaseModel):
     name: str
@@ -8,7 +9,7 @@ class User(BaseModel):
     name:  str
     email:EmailStr
     password:str
-    role :str 
+    role :Optional[str] 
 class UserCreationResponse(BaseModel):
     name:str
     password:str
