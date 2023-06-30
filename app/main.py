@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends,Response,status,HTTPException
 from fastapi.params import Body 
 from pydantic import BaseModel
 from typing import Optional,List
-from random import randrange
+from .config import settings
 from . import  models, schemas,utils
 from .routers import users,exercices,login
 from .database import SessionLocal, engine,get_db

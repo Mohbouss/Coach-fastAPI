@@ -39,3 +39,11 @@ def delete_exercise_by_id(id: int,db : Session =Depends(get_db)):
     deleted_task.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+@router.put("/exercice/{id}")
+def update_state_exercice( state: schemas.UpdateExercise,id:int,db: Session = Depends(get_db)):
+    updated_task =db.query(models.Exercice).filter(models.Exercice.id == id)
+    if  updated_task.first() == None :
+      raise HTTPException(status_code =status.HTTP_404_NOT_FOUND, detail=f"user with id :{id} not found")
+    updated_task.update(state.dict() ,synchronize_session=False) 
+    db.commit()
+    return updated_task.first()

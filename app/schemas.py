@@ -1,5 +1,6 @@
 from pydantic import BaseModel,EmailStr
 from typing import Optional
+from sqlalchemy import  Column, ForeignKey, Integer, String ,Boolean
 
 class Exercice(BaseModel):
     name: str
@@ -28,3 +29,6 @@ class Auth(BaseModel):
 class Authout(BaseModel):
     password:str
     role:str
+
+class UpdateExercise(BaseModel):
+    state: bool
