@@ -5,18 +5,21 @@ from sqlalchemy import  Column, ForeignKey, Integer, String ,Boolean
 class Exercice(BaseModel):
     name: str
     userid: int 
-
-class User(BaseModel):
+class Coach(BaseModel):
     name:  str
     email:EmailStr
     password:str
-    role :Optional[str] 
+
+    
+class Coachee(Coach):
+    coachId : int
+     
 class UserCreationResponse(BaseModel):
     name:str
-    password:str
     role:str
     class Config:
         orm_mode = True
+        
 
 class exerciceCreationResponse(BaseModel):
     name: str
@@ -27,7 +30,6 @@ class Auth(BaseModel):
     email:EmailStr
     password:str
 class Authout(BaseModel):
-    password:str
     role:str
 
 class UpdateExercise(BaseModel):

@@ -20,7 +20,7 @@ def get_exercises_by_user_id(id :int,db : Session =Depends(get_db)):
  exercice =db.query(models.Exercice).filter(models.Exercice.userid == id).all()
  return exercice  
 ##create exercices   
-@router.post('/exercice', status_code=status.HTTP_201_CREATED,response_model= schemas.exerciceCreationResponse )
+@router.post('/exercices', status_code=status.HTTP_201_CREATED,response_model= schemas.exerciceCreationResponse )
 def create_exercice(exercice: schemas.Exercice,db : Session =Depends(get_db) ):
     new_exercice =models.Exercice(**dict(exercice))
     db.add(new_exercice)
@@ -30,8 +30,8 @@ def create_exercice(exercice: schemas.Exercice,db : Session =Depends(get_db) ):
 
 ##delete exercices
 
-@router.delete('/exercice/{id}', status_code=status.HTTP_204_NO_CONTENT)
-def delete_exercise_by_id(id: int,db : Session =Depends(get_db)):
+@router.delete('/exercices/{id}', status_code=status.HTTP_204_NO_CONTENT)
+def delete_exercise_by_user_id(id: int,db : Session =Depends(get_db)):
     deleted_task=db.query(models.Exercice).filter(models.Exercice.id == id)
     if deleted_task.first() == None:
        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"exercices with id: {id} not found")
@@ -39,7 +39,7 @@ def delete_exercise_by_id(id: int,db : Session =Depends(get_db)):
     deleted_task.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
-@router.put("/exercice/{id}")
+@router.put("/exercices/{id}")
 def update_state_exercice( state: schemas.UpdateExercise,id:int,db: Session = Depends(get_db)):
     updated_task =db.query(models.Exercice).filter(models.Exercice.id == id)
     if  updated_task.first() == None :
