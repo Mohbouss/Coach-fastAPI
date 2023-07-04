@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from typing import Optional,List
 from .config import settings
 from . import  models, schemas,utils
-from .routers import coachee,coach,exercices,login
+from .routers import users,exercices,login
 from .database import SessionLocal, engine,get_db
 from sqlalchemy.orm import Session
 import psycopg2
@@ -33,7 +33,6 @@ while True:
       time.sleep(2)
   """
 
-app.include_router(coachee.router)
-app.include_router(coach.router)
+app.include_router(users.router)
 app.include_router(exercices.router)
 app.include_router(login.router)

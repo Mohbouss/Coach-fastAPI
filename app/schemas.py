@@ -5,7 +5,7 @@ from sqlalchemy import  Column, ForeignKey, Integer, String ,Boolean
 class Exercice(BaseModel):
     name: str
     userid: int 
-class Coach(BaseModel):
+""" class Coach(BaseModel):
     name:  str
     email:EmailStr
     password:str
@@ -13,7 +13,14 @@ class Coach(BaseModel):
     
 class Coachee(Coach):
     coachId : int
-     
+ """
+class User(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+    role : str
+    coachId: Optional[int] = None
+
 class UserCreationResponse(BaseModel):
     name:str
     role:str
